@@ -1,5 +1,6 @@
 import { Gantt } from './gantt.module.js';
 
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
 const gantt = new Gantt({
     appendTo : document.body,
@@ -13,7 +14,8 @@ const gantt = new Gantt({
                 url : '/load'
             },
             sync : {
-                url : '/sync'
+                url     : '/sync',
+                headers : { 'X-CSRFToken' : csrftoken }
             }
         },
         autoLoad         : true,

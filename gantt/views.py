@@ -2,7 +2,6 @@ from django.shortcuts import render
 from .models import Task, Dependency
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
-from django.views.decorators.csrf import csrf_exempt
 
 import json
 
@@ -49,6 +48,7 @@ def create_operation(added, table):
         new_record = None
 
         if table == 'tasks':
+            record['parentId_id'] = record.pop('parentId')
             record.pop('segments')
             new_record = Task.objects.create(**record)
 
@@ -93,7 +93,6 @@ def apply_table_changes(table, changes):
     return rows
 
 
-@csrf_exempt
 def sync(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
